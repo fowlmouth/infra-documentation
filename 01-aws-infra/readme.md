@@ -6,9 +6,9 @@ Implement a network described by the AWS documentation article. This network has
 
 * A VPC with a size /16 IPv4 CIDR block (example: 10.0.0.0/16). This provides 65,536 private IPv4 addresses.
 
-* A public subnet with a size /24 IPv4 CIDR block (example: 10.0.0.0/24). This provides 256 private IPv4 addresses. A public subnet is a subnet that's associated with a route table that has a route to an Internet gateway.
+* A public subnet with a size /20 IPv4 CIDR block (example: 10.0.0.0/20). This provides 4096 private IPv4 addresses. A public subnet is a subnet that's associated with a route table that has a route to an Internet gateway.
 
-* A private subnet with a size /24 IPv4 CIDR block (example: 10.0.1.0/24). This provides 256 private IPv4 addresses.
+* A private subnet with a size /20 IPv4 CIDR block (example: 10.0.16.0/20). This provides 4096 private IPv4 addresses.
 
 * An Internet gateway. This connects the VPC to the Internet and to other AWS services.
 

@@ -2,6 +2,8 @@
 # Terraform data
 *.tfstate
 *.tfstate.backup
+**/.terraform/*
+.terraform.lock.hcl
 
 # Local files
 aws-env.sh
