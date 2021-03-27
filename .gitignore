@@ -1,0 +1,8 @@
+
+# Terraform data
+*.tfstate
+*.tfstate.backup
+
+# Local files
+aws-env.sh
+
