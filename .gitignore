@@ -7,4 +7,6 @@
 
 # Local files
 aws-env.sh
+aws-key
+aws-key.pub
 
