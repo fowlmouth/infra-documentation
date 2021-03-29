@@ -26,4 +26,8 @@ variable public_subnet_cidr {
 
 variable ssh_public_key_file{}
 
+variable ssh_cidr {
+  default = ""
+}
+
 

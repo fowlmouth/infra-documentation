@@ -44,12 +44,44 @@ data aws_ami instance_ami {
   owners = ["099720109477"] # Canonical
 }
 
+resource aws_security_group public {
+  vpc_id = module.network.vpc_id
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = [var.ssh_cidr]
+  }
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource aws_security_group private {
+  vpc_id = module.network.vpc_id
+}
+
 module public_instance {
   source = "./instance"
   ami_id = data.aws_ami.instance_ami.id
-  instance_type = "t3.small"
+  instance_type = "t2.micro"
   availability_zone = var.availability_zone
   subnet_id = module.network.public_subnet_id
-  
-}
+  is_public = true
+  instance_volume_size = 8
+  key_name = aws_key_pair.key.id
 
+  security_groups = [ aws_security_group.public.id ]
+}
