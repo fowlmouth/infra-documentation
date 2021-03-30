@@ -16,8 +16,9 @@ resource aws_instance inst {
   ami = var.ami_id
   instance_type = var.instance_type
   availability_zone = var.availability_zone
-  associate_public_ip_address = false // var.associate_public_ip_address
+  associate_public_ip_address = var.associate_public_ip_address
   key_name = var.key_name
+  user_data = var.user_data
 
   subnet_id = var.subnet_id
   vpc_security_group_ids = var.security_groups

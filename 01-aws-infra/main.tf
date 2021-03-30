@@ -21,6 +21,8 @@ resource aws_key_pair key {
 module network {
   source = "./network"
   region = var.region
+  availability_zone = var.availability_zone
+  
 }
 
 data aws_ami instance_ami {
@@ -71,17 +73,57 @@ resource aws_security_group public {
 
 resource aws_security_group private {
   vpc_id = module.network.vpc_id
+
+  ingress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = [ module.network.vpc_cidr ]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 module public_instance {
   source = "./instance"
   ami_id = data.aws_ami.instance_ami.id
-  instance_type = "t2.micro"
+  instance_type = var.instance_type
   availability_zone = var.availability_zone
-  subnet_id = module.network.public_subnet_id
-  is_public = true
   instance_volume_size = 8
   key_name = aws_key_pair.key.id
 
+  is_public = true
+  subnet_id = module.network.public_subnet_id
+  associate_public_ip_address = true
+
   security_groups = [ aws_security_group.public.id ]
+
+  user_data = <<-EUD
+#cloud-config
+runcmd:
+- curl -sSLf https://get.k0s.sh | sudo sh
+- sudo k0s install controller --single
+- sudo systemctl start k0scontroller
+- sudo systemctl enable k0scontroller
+EUD
 }
+
+module private_instance {
+  source = "./instance"
+  ami_id = data.aws_ami.instance_ami.id
+  instance_type = var.instance_type
+  availability_zone = var.availability_zone
+  instance_volume_size = 8
+  key_name = aws_key_pair.key.id
+
+  is_public = false
+  subnet_id = module.network.private_subnet_id
+
+  security_groups = [ aws_security_group.private.id ]
+}
+
