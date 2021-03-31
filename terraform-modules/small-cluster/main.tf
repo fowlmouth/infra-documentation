@@ -19,7 +19,7 @@ resource aws_key_pair key {
 }
 
 module network {
-  source = "./network"
+  source = "../network"
   region = var.region
   availability_zone = var.availability_zone
   
@@ -90,7 +90,7 @@ resource aws_security_group private {
 }
 
 module public_instance {
-  source = "./instance"
+  source = "../instance"
   ami_id = data.aws_ami.instance_ami.id
   instance_type = var.instance_type
   availability_zone = var.availability_zone
@@ -114,7 +114,7 @@ EUD
 }
 
 module private_instance {
-  source = "./instance"
+  source = "../instance"
   ami_id = data.aws_ami.instance_ami.id
   instance_type = var.instance_type
   availability_zone = var.availability_zone
