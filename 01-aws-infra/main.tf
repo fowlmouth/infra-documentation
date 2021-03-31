@@ -99,10 +99,9 @@ module public_instance {
 
   is_public = true
   subnet_id = module.network.public_subnet_id
-  associate_public_ip_address = true
 
   security_groups = [ aws_security_group.public.id ]
-
+/*
   user_data = <<-EUD
 #cloud-config
 runcmd:
@@ -111,6 +110,7 @@ runcmd:
 - sudo systemctl start k0scontroller
 - sudo systemctl enable k0scontroller
 EUD
+*/
 }
 
 module private_instance {
